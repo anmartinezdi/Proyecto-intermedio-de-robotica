@@ -1,0 +1,82 @@
+<?xml version="1.0" ?>
+<!-- 
+  UNIVERSIDAD NACIONAL DE COLOMBIA
+  DEPARTAMENTO DE ING. MECANICA Y MECATRONICA
+  LABORATORIO / ROBOTICA 2020-1
+  PROF: PEDRO CARDENAS
+
+  AUTHORS: 
+  -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+ <xacro:macro name="m_link_mesh" params="name origin_xyz origin_rpy meshfile mass ixx ixy ixz iyy iyz izz scale">
+   <link name="${name}">
+    <visual>
+      <origin rpy="${origin_rpy}" xyz="${origin_xyz}"/>
+      <geometry>
+        <mesh filename="${meshfile}" scale="${scale}"/>
+      </geometry>
+      <material name="orange">
+        <color rgba="1 0.5 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="${origin_rpy}" xyz="${origin_xyz}"/>
+      <geometry>
+        <mesh filename="${meshfile}" scale="${scale}"/>
+      </geometry>
+    </collision>
+    <inertial>
+       <mass value="${mass}"/>
+       <origin rpy="${origin_rpy}" xyz="${origin_xyz}" />
+       <inertia ixx="${ixx}" ixy="${ixy}" ixz="${ixz}" iyy="${iyy}" iyz="${iyz}" izz="${izz}" />
+    </inertial>
+  </link>
+ </xacro:macro>
+
+<xacro:macro name="m_joint" params="name type axis_xyz origin_rpy origin_xyz parent child l_effort l_lower l_upper l_velocity">
+  <joint name="${name}" type="${type}">
+    <axis xyz="${axis_xyz}" />
+    <limit effort="${l_effort}" lower="${l_lower}" upper="${l_upper}" velocity="${l_velocity}" />
+    <origin rpy="${origin_rpy}" xyz="${origin_xyz}"/>
+    <parent link="${parent}"/>
+    <child link="${child}"/>
+  </joint>
+
+ <transmission name="trans_${name}">
+   <type>transmission_interface/SimpleTransmission</type>
+   <joint name="${name}">
+     <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+   </joint>
+   <actuator name="motor_${name}">
+     <mechanicalReduction>1</mechanicalReduction>
+   </actuator>
+ </transmission>
+
+</xacro:macro>
+
+<xacro:macro name="m_joint_mimic" params="name type axis_xyz origin_rpy origin_xyz parent child l_effort l_lower l_upper l_velocity mimic_joint m_multiplier m_offset">
+  <joint name="${name}" type="${type}">
+    <axis xyz="${axis_xyz}" />
+    <limit effort="${l_effort}" lower="${l_lower}" upper="${l_upper}" velocity="${l_velocity}" />
+    <origin rpy="${origin_rpy}" xyz="${origin_xyz}"/>
+    <parent link="${parent}"/>
+    <child link="${child}"/>
+  </joint>
+
+
+ <transmission name="trans_${name}">
+   <type>transmission_interface/SimpleTransmission</type>
+   <joint name="${name}">
+     <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+   </joint>
+   <actuator name="motor_${name}">
+     <mechanicalReduction>1</mechanicalReduction>
+   </actuator>
+ </transmission>
+
+</xacro:macro>
+
+
+
+</robot>

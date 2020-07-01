@@ -1,0 +1,174 @@
+<?xml version="1.0" ?>
+<!-- 
+  UNIVERSIDAD NACIONAL DE COLOMBIA
+  DEPARTAMENTO DE ING. MECANICA Y MECATRONICA
+  LABORATORIO / ROBOTICA 2020-1
+  PROF: PEDRO CARDENAS
+
+  AUTHORS:
+  -->
+
+<robot name="PhantomXPincher" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Include -->
+  <xacro:include filename="$(find phantom)/urdf/phantom_links-joints.xacro" />
+  <xacro:include filename="$(find phantom)/urdf/phantom_parametersA.xacro" />
+  <!-- END - Include -->
+
+ <property name="M_PI" value="3.14159" />
+
+  <!-- Robot description -->
+
+  <link name="world"/>  <!-- Base link from Gazebo-->
+  
+	<!-- Joint to fix the base so it does not move-->
+  <joint name="fixed" type="fixed"> 
+    <parent link="world"/>
+    <child link="${link_00_name}"/>
+  </joint>
+
+ <m_link_mesh name="${link_00_name}"
+    origin_xyz="0 0 0"
+    origin_rpy="0 0 ${M_PI}" 
+    meshfile="package://phantom/meshes/PincherBase.dae"
+    mass="0.0561"
+    ixx="0.0001" ixy="0" ixz="0"
+    iyy="0.0001" iyz="0"
+    izz="0.0001"
+    scale="1 1 1"
+  />
+
+  <m_joint name="${joint_01_name}" 
+    type="revolute"
+    axis_xyz="0 0 1"
+    origin_rpy="0 0 0" origin_xyz="0 0 ${0.8/15}"
+    parent="${link_00_name}" child="${link_01_name}"
+    l_effort="50" l_lower="-2.61799" l_upper="2.617997" l_velocity="0.5"  
+  />
+
+<m_link_mesh name="${link_01_name}"
+    origin_xyz="0 0 ${0.45/15}"
+    origin_rpy="0 0 0" 
+    meshfile="package://phantom/meshes/PincherLink1.dae"
+    mass="0.069"
+    ixx="0.0001" ixy="0" ixz="0"
+    iyy="0.0001" iyz="0"
+    izz="0.0001"
+    scale="1 1 1"
+  />
+
+  <m_joint name="${joint_02_name}" 
+    type="revolute"
+    axis_xyz="0 0 1"
+    origin_rpy="${M_PI/2} ${-M_PI/2} 0" origin_xyz="0 0 ${1.08/15}"
+    parent="${link_01_name}" child="${link_02_name}"
+    l_effort="50" l_lower="-2.0" l_upper="2.61799" l_velocity="0.5"  
+  />
+
+
+ <m_link_mesh name="${link_02_name}"
+    origin_xyz="0 0 0"
+    origin_rpy="${M_PI/2} 0 ${M_PI/2}" 
+    meshfile="package://phantom/meshes/PincherLink2.dae"
+    mass="0.0113"
+    ixx="0.0001" ixy="0" ixz="0"
+    iyy="0.0001" iyz="0"
+    izz="0.0001"
+    scale="1 1 1"
+  />
+
+  <m_joint name="${joint_03_name}" 
+    type="revolute"
+    axis_xyz="0 0 1"
+    origin_rpy="0 0 0" origin_xyz="${1.605/15} 0 0"
+    parent="${link_02_name}" child="${link_03_name}"
+    l_effort="50" l_lower="-2.52" l_upper="2.52" l_velocity="0.5"  
+  />
+
+ <m_link_mesh name="${link_03_name}"
+    origin_xyz="0 0 0"
+    origin_rpy="${M_PI/2} 0 ${M_PI/2}" 
+    meshfile="package://phantom/meshes/PincherLink3.dae"
+    mass="0.0113"
+    ixx="0.0001" ixy="0" ixz="0"
+    iyy="0.0001" iyz="0"
+    izz="0.0001"
+    scale="1 1 1"
+  />
+
+  <m_joint name="${joint_04_name}" 
+    type="revolute"
+    axis_xyz="0 0 1"
+    origin_rpy="0 0 0" origin_xyz="${1.605/15} 0 0"
+    parent="${link_03_name}" child="${link_04_name}"
+    l_effort="50" l_lower="-1.94" l_upper="1.9" l_velocity="0.5" 
+  />
+
+ <m_link_mesh name="${link_04_name}"
+    origin_xyz="0 0 0"
+    origin_rpy="${M_PI/2} 0 ${M_PI/2}" 
+    meshfile="package://phantom/meshes/PincherTool.dae"
+    mass="0.0057"
+    ixx="0.0001" ixy="0" ixz="0"
+    iyy="0.0001" iyz="0"
+    izz="0.0001"
+    scale="1 1 1"
+  />
+
+  <m_joint name="${joint_05_name}" 
+    type="prismatic"
+    axis_xyz="0 0 -1"
+    origin_rpy="0 0 0" origin_xyz="0 0 0"
+    parent="${link_04_name}" child="${link_05_name}"
+    l_effort="50" l_lower="0" l_upper="${0.225/15}" l_velocity="1" 
+  />
+
+ <m_link_mesh name="${link_05_name}"
+    origin_xyz="${1.074/15} 0 ${0.425/15}"
+    origin_rpy="${M_PI/2} ${M_PI} ${M_PI/2}" 
+    meshfile="package://phantom/meshes/PincheFinger.dae"
+    mass="0.0018"
+    ixx="0.0001" ixy="0" ixz="0"
+    iyy="0.0001" iyz="0"
+    izz="0.0001"
+    scale="1 1 1"
+  />
+
+  <m_joint name="${joint_06_name}" 
+    type="prismatic"
+    axis_xyz="0 0 1"
+    origin_rpy="0 0 0" origin_xyz="0 0 0"
+    parent="${link_04_name}" child="${link_06_name}"
+    l_effort="50" l_lower="0" l_upper="${0.225/15}" l_velocity="1"
+  />
+
+ <m_link_mesh name="${link_06_name}"
+    origin_xyz="${1.074/15} 0 ${-0.425/15}"
+    origin_rpy="${M_PI/2} 0 ${M_PI/2}" 
+    meshfile="package://phantom/meshes/PincheFinger.dae"
+    mass="0.0018"
+    ixx="0.0001" ixy="0" ixz="0"
+    iyy="0.0001" iyz="0"
+    izz="0.0001"
+    scale="1 1 1"
+  />
+
+
+  <create_noa name="NOA"
+    origin_xyz="${1/15} 0 0"
+    origin_rpy="-1.57 0 -1.57" 
+    parent="${link_04_name}"
+  />
+
+	<!-- Gazebo Plugin -->
+	<gazebo>
+
+	<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+	<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+ <legacyModeNS>true</legacyModeNS> 
+	</plugin>
+	</gazebo>
+
+  
+</robot>
+
